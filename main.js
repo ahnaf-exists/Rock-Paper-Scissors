@@ -1,10 +1,28 @@
 const currentMatch = document.querySelector(".current-match");
 const currentStats = document.querySelector(".current-stats");
+let intervalId;
 let score = JSON.parse(localStorage.getItem("score"));
 if (score === null) {
     score = {win: 0, lose: 0, draw: 0};
 }
+
 const scoreHTML = document.querySelector(".score");
+const autoplayBtn = document.querySelector(".auto")
+
+function autoplay() {
+    if (autoplayBtn.innerText === "Autoplay") {
+        autoplayBtn.innerText = "Stop Playing";
+        let move;
+
+        intervalId = setInterval(function startAutoplay(){
+            move = generateRandomMove();
+            playMove(move);
+        }, 100);
+    } else {
+        clearInterval(intervalId);
+        autoplayBtn.innerText = "Autoplay";
+    }
+}
 
 function viewScore() {
     currentMatch.innerText = "";
@@ -18,6 +36,8 @@ function resetScore() {
         localStorage.removeItem("score");
         score = {win: 0, lose: 0, draw: 0};
         viewScore();
+        clearInterval(intervalId);
+        alert("Your progress has been reset");
     }
 }
 
