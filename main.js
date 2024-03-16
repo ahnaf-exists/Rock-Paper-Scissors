@@ -1,7 +1,25 @@
 const currentMatch = document.querySelector(".current-match");
 const currentStats = document.querySelector(".current-stats");
-const score = JSON.parse(localStorage.getItem("score"));
+let score = JSON.parse(localStorage.getItem("score"));
+if (score === null) {
+    score = {win: 0, lose: 0, draw: 0};
+}
 const scoreHTML = document.querySelector(".score");
+
+function viewScore() {
+    currentMatch.innerText = "";
+    currentStats.innerText = "";
+    scoreHTML.innerText = `Win: ${score.win}, Lose: ${score.lose}, Draw: ${score.draw}`;
+}
+
+function resetScore() {
+    const ensure = prompt("Are you sure? [Y/N]");
+    if (ensure == "Y" || ensure == "y" || ensure == "Yes" || ensure == "yes") {
+        localStorage.removeItem("score");
+        score = {win: 0, lose: 0, draw: 0};
+        viewScore();
+    }
+}
 
 function generateRandomMove() {
     const choice = ["Rock", "Paper", "Scissors"];
